@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>OOP JS</title>
+        <style>
+            input {
+                margin: 5px 0;
+                padding: 5px; 
+            }
+        </style>
+    </head>
+    <body>
+        <div></div>
+        <h2>Komis</h2>
+
+        </div>
+            <button class="add">Dodaj samochód</button>
+            <button class="delete">Usuń samochód</button>
+            <button class="show">Wyświetl samochody</button>
+        </div>
+        <section></section>
+
+
+        <script src="./Samochod.js"></script>
+        <script src="./Komis.js"></script>
+        <script>
+            // tworzymy komis
+            const komisTuptus = new Komis('Tuptuś i spółka');
+
+            // pobieramy przyciski
+            const btnAdd = document.querySelector('button.add')
+            const btnDelete = document.querySelector('button.delete')
+            const btnShow = document.querySelector('button.show')
+
+            const section = document.querySelector('section')
+
+            let licznik = 1;
+
+            // obsługa dodania samochodu
+            btnAdd.addEventListener('click', function() {
+                section.innerHTML = `
+                    <input type="text" name="marka" placeholder="Wpisz markę samochodu"><br>
+                    <input type="text" name="model" placeholder="Wpisz model samochodu"><br>
+                    <input type="number" name="cena" placeholder="Wpisz cenę samochodu"><br>
+                    <input type="number" name="rocznik" placeholder="Wpisz rocznik samochodu"><br>
+                    <input type="number" name="spalanie" placeholder="Wpisz spalanie samochodu"><br>
+                    <button class="add_submit">Dodaj</button>
+                `;
+
+                document.querySelector('button.add_submit').addEventListener('click', function() {
+                    // pobieramy dane formularza
+                    const model = document.querySelector('input[name="model"]').value;
+                    const marka = document.querySelector('input[name="marka"]').value;
+                    const cena = document.querySelector('input[name="cena"]').value;
+                    const rocznik = document.querySelector('input[name="rocznik"]').value;
+                    const spalanie = document.querySelector('input[name="spalanie"]').value;
+
+                    // tworzymy obiekt
+                    komisTuptus.dodajSamochod(new Samochod(marka, model, cena, rocznik, spalanie))
+
+                    section.innerHTML = 'Pomyślnie dodano nowy samochód'
+                })
+            })
+
+            // obsługa wyświetlania samochodów
+            btnShow.addEventListener('click', function() {
+                section.innerHTML = `${komisTuptus.wyswietlSamochody()}`
+            })
+
+            btnDelete.addEventListener('click', function() {
+                section.innerHTML = `
+                    <input type="text" name="marka" placeholder="Wpisz markę samochodu do usunięcia"><br>
+                    <input type="text" name="model" placeholder="Wpisz model samochodu do usunięcia"><br>
+                    <button class="deleteCar">Usuń</button>  
+                `;
+
+                document.querySelector('button.deleteCar').addEventListener('click', function() {
+                    const model = document.querySelector('input[name="model"]').value;
+                    const marka = document.querySelector('input[name="marka"]').value;
+
+                    if(komisTuptus.sprawdzCzyIstnieje(marka, model)) {
+                        komisTuptus.usunSamochod(marka, model)
+                        section.innerHTML = `Usunięto samochód marki: ${model}, model: ${model}`
+                    } else {
+                        section.innerHTML = 'Podano niepoprawne dane! Akcja nieudana'
+                    }
+                })
+            })
+        </script>
+    </body>
+</html>
